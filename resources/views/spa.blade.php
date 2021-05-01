@@ -21,32 +21,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        @verbatim
-                        <th scope="row">1</th>
-                        <td>Война и мир</td>
-                        <td>Л. Н. Толстой</td>
+                    @verbatim
+                    <tr v-for="item in items">
+                        
+                        <th scope="row">{{ item.id }}</th>
+                        <td>{{ item.title }}</td>
+                        <td>{{ item.author }}</td>
                         <td>
-                            <button type="button" class="btn btn-outline-primary" v-on:click="">
+                            <button type="button" class="btn btn-outline-primary" v-on:click="changeBookAvailability()">
                                 Доступна
                             </button>
                         </td>
-                        @endverbatim
+                        
                         <td>
-                            <button type="button" class="btn btn-outline-danger" v-on:click="">
+                            <button type="button" class="btn btn-outline-danger" v-on:click="deleteBook(item.id)">
                                 Удалить
                             </button>
                         </td>
                     </tr>
-
+                    @endverbatim
                     <!-- Строка с полями для добавления новой книги -->
                     <tr>
                         <th scope="row">Добавить</th>
-                        <td><input type="text" class="form-control"></td>
-                        <td><input type="text" class="form-control"></td>
+                        <td><input type="text" class="form-control" placeholder="Название книги" v-model="title"></td>
+                        <td><input type="text" class="form-control" placeholder="Автор" v-model="author"></td>
                         <td></td>
                         <td>
-                            <button type="button" class="btn btn-outline-success" v-on:click="">
+                            <button type="button" class="btn btn-outline-success" v-on:click="addBook()">
                                 Добавить
                             </button>
                         </td>
@@ -68,23 +69,47 @@
             data: {
                 title: '',
                 author: '',
-                availabilty = 0,
+                availability: true,
+                items: []
             },
             methods: {
                 loadBookList(){
                     axios.get('api/book/all')
-                    .then(req => {
-                        console.log(req.data)
+                    .then(req => {   
+                        this.items = req.data ;                    
+                        console.log(req.data);
                     })
                 },
                 addBook(){
+
+                    console.log(this.title, this.author, this.availabilty);
+                    axios.post('api/book/add', {
+                        "title": this.title,
+                        "author": this.author,
+                        
+                    })
+                    .then((response) => {
+                        console.log(response);
+                        this.loadBookList();
+                    });
+
                     
                 },
                 deleteBook(id){
-                    
+                    axios.delete('api/book/delete/'+ id, {                   
+                    })
+                    .then(req => {
+                        console.log(req.data);
+                        this.loadBookList();
+                    })
                 },
                 changeBookAvailability(id){
-                    
+                    axios.get('api/book/change_availabilty/'+ id, {                   
+                    })
+                    .then(req => {
+                        console.log(req.data);
+                        this.loadBookList();
+                    })
                 }
             },
             mounted(){

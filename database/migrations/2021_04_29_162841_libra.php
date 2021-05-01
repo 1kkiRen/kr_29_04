@@ -15,9 +15,9 @@ class Libra extends Migration
     {
         Schema::create('libra', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('title');
-            $table->string('author');
-            $table->boolean('availability');
+            $table->string('title')->nullable();
+            $table->string('author')->default('');
+            $table->boolean('availability')->default('');
             $table->timestamps();
         });
     }

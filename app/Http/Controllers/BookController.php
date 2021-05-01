@@ -9,7 +9,7 @@ class BookController extends Controller
 {
     public function all(){
         $books = Libra::All();
-
+        json_encode($books);
         return $books;
     }
 
@@ -17,21 +17,23 @@ class BookController extends Controller
         $book = new Libra;
         $book->title = $req->title;
         $book->author = $req->author;
-        $book->availabilty = $req->availabilty;
+        $book->availability = true;
         $book->save();
         
-        return "ok" ;       
+        return redirect('/');     
     }
 
     public function delete($id){
-        $book = Libra::destroy($id);
+        $book = Libra::find($id);
+        $book->delete();
+
 
         return "ok";
     }
 
     public function change_availabilty($id){
         $book = Libra::find($id);
-        $book->availabilty = !$book->availabilty;
+        $book->availability = !$book->availability;
 
         return "ok";
     }

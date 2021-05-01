@@ -7,4 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Libra extends Model
 {
     //
+
+    protected $table = 'libra';
 }
