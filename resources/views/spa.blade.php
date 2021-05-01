@@ -28,8 +28,8 @@
                         <td>{{ item.title }}</td>
                         <td>{{ item.author }}</td>
                         <td>
-                            <button type="button" class="btn btn-outline-primary" v-on:click="changeBookAvailability()">
-                                Доступна
+                            <button type="button" class="btn btn-outline-primary" v-on:click="changeBookAvailability(item.id)">
+                                {{ item.availability }}
                             </button>
                         </td>
                         
@@ -69,7 +69,7 @@
             data: {
                 title: '',
                 author: '',
-                availability: true,
+                availability: 'Доступна',
                 items: []
             },
             methods: {
@@ -86,6 +86,7 @@
                     axios.post('api/book/add', {
                         "title": this.title,
                         "author": this.author,
+                        "availability": this.availability,
                         
                     })
                     .then((response) => {
@@ -104,10 +105,10 @@
                     })
                 },
                 changeBookAvailability(id){
-                    axios.get('api/book/change_availabilty/'+ id, {                   
+                    console.log(id);
+                    axios.get('api/book/change_availability/'+ id, {          
                     })
                     .then(req => {
-                        console.log(req.data);
                         this.loadBookList();
                     })
                 }

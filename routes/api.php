@@ -23,4 +23,4 @@ Route::get('/book/all', 'BookController@all');
 
 Route::delete('/book/delete/{id}', 'BookController@delete');
 
-Route::get('/book/change_availabilty/{id}', 'BookController@changeAvailabilty');
+Route::get('/book/change_availability/{id}', 'BookController@changeAvailabilty');

@@ -17,7 +17,7 @@ class BookController extends Controller
         $book = new Libra;
         $book->title = $req->title;
         $book->author = $req->author;
-        $book->availability = true;
+        $book->availability = $req->availability;
         $book->save();
         
         return redirect('/');     
@@ -27,15 +27,23 @@ class BookController extends Controller
         $book = Libra::find($id);
         $book->delete();
 
-
-        return "ok";
     }
 
-    public function change_availabilty($id){
+    public function changeAvailabilty($id){
         $book = Libra::find($id);
-        $book->availability = !$book->availability;
+        if($book->availability == 'Доступна') {
+            $book->availability = 'Не доступна';
+            $book->save();
+            return redirect('/');  
+        }
+        if($book->availability == 'Не доступна') {
+            $book->availability = 'Доступна';
+            $book->save();
+            return redirect('/');  
+        }
 
-        return "ok";
+        // return $book->availability;
+        
     }
     
 }
