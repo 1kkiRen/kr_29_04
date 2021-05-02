@@ -18,6 +18,12 @@
                         <th scope="col">Автор</th>
                         <th scope="col">Наличие</th>
                         <th scope="col">Действия</th>
+                        <th scope="col">
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Поиск книги" aria-describedby="button-addon2" v-model="search">
+                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" v-on:click="searchBookList()">Найти</button>
+                              </div>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,6 +73,7 @@
         let vm = new Vue({
             el: '#app',
             data: {
+                search: '',
                 title: '',
                 author: '',
                 availability: 'Доступна',
@@ -111,7 +118,44 @@
                     .then(req => {
                         this.loadBookList();
                     })
-                }
+                },
+                searchBookList(){
+                    if(this.search == '')
+                        this.loadBookList();
+                    else {
+                        this.searchBook_by_id();
+                        this.searchBook_by_title();
+                        this.searchBook_by_author();
+                    }
+                    
+                },
+                searchBook_by_id(){
+                    axios.get('api/book/search_by_id/' + this.search, {})
+                    .then(req => {   
+                        this.items = req.data ;                    
+                        console.log(req.data);
+                    })
+                },
+                searchBook_by_title(){
+                    axios.get('api/book/search_by_title/' + this.search, {})
+                    .then(req => { 
+                        req.data.forEach(item => {
+                            this.items.push(item);
+                            
+                        });  
+                                         
+                        
+                        
+                    })
+                },
+                searchBook_by_author(){
+                    axios.get('api/book/search_by_author/' + this.search, {})
+                    .then(req => {   
+                        req.data.forEach(item => {
+                            this.items.push(item);
+                        }); 
+                    })
+                },
             },
             mounted(){
                 // Сразу после загрузки страницы подгружаем список книг и отображаем его

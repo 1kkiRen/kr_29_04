@@ -45,5 +45,28 @@ class BookController extends Controller
         // return $book->availability;
         
     }
+
+    public function search_by_id($value){
+        $book_by_id = Libra::where('id', $value)->get();       
+        json_encode($book_by_id);
+        return $book_by_id;
+        
+    }
+
+    public function search_by_title($value){
+        $book_by_title = Libra::where('title', $value)->get();
+        json_encode($book_by_title);
+        return $book_by_title;
+        
+    }
+
+    public function search_by_author($value){
+        $book_by_author = Libra::where('author', $value)->get();
+        json_encode($book_by_author);
+        return $book_by_author;
+        
+    }
     
 }
+
+        
